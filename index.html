@@ -1315,19 +1315,19 @@
 
     let currentCategory = 'vaso';
     let currentCalcMode = 'forward';
-
+let activeDrugs = [];
+let activeMedications = [];
+    
     window.addEventListener('DOMContentLoaded', () => {
       setupEventListeners();
       populateDrugDropdown();
       calculateCrCl();
       calculate();
       calculateMonitoring();
-      console.log(DRUGS);
-console.log(Object.keys(DRUGS));
-console.log(currentCategory);
 
 
     });
+
 
     function setupEventListeners() {
       ['pt-weight', 'pt-age', 'pt-sex', 'pt-scr', 'pt-name', 'pt-id'].forEach(id => {
@@ -1793,184 +1793,6 @@ console.log(currentCategory);
       document.getElementById('calc-input').value = dose;
       calculate();
     }
-
-let activeDrugs = [];
-
-function addCurrentDrug(){
-
-    const drugKey =
-        document.getElementById('drug-select').value;
-
-    const drug = DRUGS[drugKey];
-
-    const prep =
-        document.getElementById('strength-select');
-
-    const prepText =
-        prep.options[prep.selectedIndex].text;
-
-    const parameter =
-        document.getElementById('calc-input').value;
-
-    const result =
-        document.getElementById('calc-output-val').textContent;
-
-    const inputUnit =
-        document.getElementById('input-unit').textContent;
-
-    const outputUnit =
-        document.getElementById('output-unit').textContent;
-
-    activeDrugs.push({
-        drug: drug.name,
-        prep: prepText,
-        parameter: `${parameter} ${inputUnit}`,
-        result: `${result} ${outputUnit}`
-    });
-
-    renderActiveDrugList();
-}
-
-function removeActiveDrug(index){
-
-    activeDrugs.splice(index,1);
-
-    renderActiveDrugList();
-}
-
-function renderActiveDrugList(){
-
-    const list =
-        document.getElementById('active-drugs-list');
-
-    if(!list) return;
-
-    list.innerHTML = '';
-
-    activeDrugs.forEach((drug,index)=>{
-
-        list.innerHTML += `
-
-        <div class="bg-slate-800 border border-slate-700 rounded-lg p-3">
-
-            <div class="flex justify-between">
-
-                <div>
-
-                    <div class="font-bold text-sky-300">
-                        ${drug.drug}
-                    </div>
-
-                    <div class="text-xs text-slate-400 mt-1">
-                        ${drug.prep}
-                    </div>
-
-                    <div class="text-xs text-emerald-400 mt-1">
-                        ${drug.parameter}
-                    </div>
-
-                    <div class="text-xs text-amber-300">
-                        ${drug.result}
-                    </div>
-
-                </div>
-
-                <button
-                    onclick="removeActiveDrug(${index})"
-                    class="text-rose-400 hover:text-rose-300">
-
-                    <i class="fa-solid fa-trash"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
----  // ACTIVE MEDICATION//---
-
-let activeMedications = [];
-
-function addMedication(){
-
-    const drug =
-      document.getElementById('active-drug').value;
-
-    const dose =
-      document.getElementById('active-dose').value;
-
-    if(!drug) return;
-
-    activeMedications.push({
-        drug,
-        dose
-    });
-
-    renderMedications();
-
-    document.getElementById('active-drug').value = '';
-    document.getElementById('active-dose').value = '';
-}
-
-function removeMedication(index){
-
-    activeMedications.splice(index,1);
-
-    renderMedications();
-
-}
-
-function renderMedications(){
-
-    const list =
-      document.getElementById('medication-list');
-
-    list.innerHTML = '';
-
-    activeMedications.forEach((med,index)=>{
-
-        list.innerHTML += `
-
-        <div class="bg-slate-900 border border-slate-700 rounded-lg p-3">
-
-          <div class="flex justify-between items-start">
-
-            <div>
-
-              <div class="font-semibold text-emerald-300">
-                ${med.drug}
-              </div>
-
-              <div class="text-xs text-slate-400 mt-1">
-                ${med.dose}
-              </div>
-
-            </div>
-
-            <button
-              onclick="removeMedication(${index})"
-              class="text-rose-400 hover:text-rose-300">
-
-              <i class="fa-solid fa-trash"></i>
-
-            </button>
-
-          </div>
-
-        </div>
-        `;
-
-    });
-
-}
-
-
 function calculateMonitoring(){
 
     const hr =
@@ -2097,6 +1919,178 @@ if(pao2 && fio2){
       pf.toFixed(0);
 
 }
+
+
+function addCurrentDrug(){
+
+    const drugKey =
+        document.getElementById('drug-select').value;
+
+    const drug = DRUGS[drugKey];
+
+    const prep =
+        document.getElementById('strength-select');
+
+    const prepText =
+        prep.options[prep.selectedIndex].text;
+
+    const parameter =
+        document.getElementById('calc-input').value;
+
+    const result =
+        document.getElementById('calc-output-val').textContent;
+
+    const inputUnit =
+        document.getElementById('input-unit').textContent;
+
+    const outputUnit =
+        document.getElementById('output-unit').textContent;
+
+    activeDrugs.push({
+        drug: drug.name,
+        prep: prepText,
+        parameter: `${parameter} ${inputUnit}`,
+        result: `${result} ${outputUnit}`
+    });
+
+    renderActiveDrugList();
+}
+
+function removeActiveDrug(index){
+
+    activeDrugs.splice(index,1);
+
+    renderActiveDrugList();
+}
+
+function renderActiveDrugList(){
+
+    const list =
+        document.getElementById('active-drugs-list');
+
+    if(!list) return;
+
+    list.innerHTML = '';
+
+    activeDrugs.forEach((drug,index)=>{
+
+        list.innerHTML += `
+
+        <div class="bg-slate-800 border border-slate-700 rounded-lg p-3">
+
+            <div class="flex justify-between">
+
+                <div>
+
+                    <div class="font-bold text-sky-300">
+                        ${drug.drug}
+                    </div>
+
+                    <div class="text-xs text-slate-400 mt-1">
+                        ${drug.prep}
+                    </div>
+
+                    <div class="text-xs text-emerald-400 mt-1">
+                        ${drug.parameter}
+                    </div>
+
+                    <div class="text-xs text-amber-300">
+                        ${drug.result}
+                    </div>
+
+                </div>
+
+                <button
+                    onclick="removeActiveDrug(${index})"
+                    class="text-rose-400 hover:text-rose-300">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+function addMedication(){
+
+    const drug =
+      document.getElementById('active-drug').value;
+
+    const dose =
+      document.getElementById('active-dose').value;
+
+    if(!drug) return;
+
+    activeMedications.push({
+        drug,
+        dose
+    });
+
+    renderMedications();
+
+    document.getElementById('active-drug').value = '';
+    document.getElementById('active-dose').value = '';
+}
+
+function removeMedication(index){
+
+    activeMedications.splice(index,1);
+
+    renderMedications();
+
+}
+
+function renderMedications(){
+
+    const list =
+      document.getElementById('medication-list');
+
+    list.innerHTML = '';
+
+    activeMedications.forEach((med,index)=>{
+
+        list.innerHTML += `
+
+        <div class="bg-slate-900 border border-slate-700 rounded-lg p-3">
+
+          <div class="flex justify-between items-start">
+
+            <div>
+
+              <div class="font-semibold text-emerald-300">
+                ${med.drug}
+              </div>
+
+              <div class="text-xs text-slate-400 mt-1">
+                ${med.dose}
+              </div>
+
+            </div>
+
+            <button
+              onclick="removeMedication(${index})"
+              class="text-rose-400 hover:text-rose-300">
+
+              <i class="fa-solid fa-trash"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+        `;
+
+    });
+
+}
+
 
 
 // ACTION FUNCTIONS
